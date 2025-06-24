@@ -1,18 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { executeQuery } from "@/lib/db"
-import { authenticateRequest } from "@/lib/middleware"
+import { NextResponse } from "next/server"
+import { db } from "@/lib/db"
 
-export async function GET(request: NextRequest) {
-  const auth = await authenticateRequest(request)
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status })
-  }
-
+export async function GET() {
   try {
-    const locations = await executeQuery("SELECT * FROM locations ORDER BY name")
+    const locations = await db.getLocations()
     return NextResponse.json({ locations })
   } catch (error) {
-    console.error("Error fetching locations:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Get locations error:", error)
+    return NextResponse.json({ error: "Failed to fetch locations" }, { status: 500 })
   }
 }
