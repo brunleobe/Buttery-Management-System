@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { db } from "@/lib/db"
-import { generateToken } from "@/lib/auth"
+import { authenticateUser, generateToken } from "@/lib/auth"
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,43 +9,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
-    // For demo purposes, we'll use simple password matching
-    // In production, you should hash passwords and store them in the database
-    const demoPasswords: { [key: string]: string } = {
-      "mercy@example.com": "admin123",
-      "jessica@example.com": "vendor123",
-      "emmanuel@example.com": "manager123",
-      "esther@example.com": "vendor123",
-      "sylvanus@example.com": "manager123",
-      "sharon@example.com": "vendor123",
-      "elozino@example.com": "vendor123",
-    }
-
-    if (!demoPasswords[email] || demoPasswords[email] !== password) {
+    const user = await authenticateUser(email, password)
+    if (!user) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
     }
 
-    const user = await db.getUserByEmail(email)
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
-    }
-
-    const token = generateToken({
-      id: user.UserID,
-      name: `${user.First_Name} ${user.Last_Name}`,
-      email: user.Email_Address,
-      phone: user.Phone_Number,
-      role: user.Role.toLowerCase(),
-    })
+    const token = generateToken(user)
 
     const response = NextResponse.json({
       success: true,
       user: {
-        id: user.UserID,
-        name: `${user.First_Name} ${user.Last_Name}`,
-        email: user.Email_Address,
-        phone: user.Phone_Number,
-        role: user.Role.toLowerCase(),
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        location: user.location,
+        status: user.status,
       },
     })
 
