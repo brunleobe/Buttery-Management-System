@@ -1,30 +1,37 @@
 # Buttery Management System
 
-A comprehensive web application for managing buttery operations including inventory, sales, user management, and reporting.
+A comprehensive web application for managing buttery operations across multiple locations with role-based access control.
 
-## Features
+## 🚀 Features
 
-- **User Management**: Role-based access control (Admin, Inventory Manager, Vendor)
-- **Product Management**: Add, edit, and track products with categories
-- **Sales Management**: Record sales with multiple payment methods
-- **Inventory Tracking**: Real-time stock levels and low-stock alerts
-- **Reporting**: Dashboard with sales analytics and performance metrics
-- **Multi-location Support**: Manage multiple buttery locations
+- **User Management**: Role-based access (Admin, Vendor, Inventory Manager)
+- **Product Catalog**: Complete product management with categories
+- **Sales Tracking**: Record sales with multiple payment methods
+- **Inventory Management**: Real-time stock tracking and low-stock alerts
+- **Location Management**: Multi-location support
+- **Reports & Analytics**: Comprehensive reporting dashboard
+- **Real-time Dashboard**: Live statistics and recent activity
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 14, React 19, TypeScript, Tailwind CSS
-- **UI Components**: shadcn/ui, Radix UI
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, MySQL
+- **UI Components**: shadcn/ui
 - **Authentication**: JWT with HTTP-only cookies
-- **Database**: Configurable (MySQL, PostgreSQL, SQLite, MongoDB)
-- **State Management**: React hooks and context
+- **Database**: MySQL with connection pooling
 
-## Quick Start
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- MySQL 8.0+
+- npm or yarn
+
+## 🔧 Installation
 
 1. **Clone the repository**
    \`\`\`bash
-   git clone <repository-url>
-   cd buttery-management-system
+   git clone https://github.com/brunleobe/Buttery-Management-System.git
+   cd Buttery-Management-System
    \`\`\`
 
 2. **Install dependencies**
@@ -32,174 +39,162 @@ A comprehensive web application for managing buttery operations including invent
    npm install
    \`\`\`
 
-3. **Configure environment variables**
+3. **Set up environment variables**
    \`\`\`bash
    cp .env.example .env.local
-   # Edit .env.local with your configuration
+   \`\`\`
+   
+   Update `.env.local` with your configuration:
+   \`\`\`env
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=ogabrunle2007$
+   DB_NAME=ButteryDB
+   JWT_SECRET=brunleandtimididthisprojectbecauseofmercy
    \`\`\`
 
-4. **Run the development server**
+4. **Set up the database**
+   
+   Create and populate your MySQL database using the provided SQL file:
+   \`\`\`bash
+   mysql -u root -pogabrunle2007$ < BMS1.sql
+   \`\`\`
+
+5. **Run the development server**
    \`\`\`bash
    npm run dev
    \`\`\`
 
-5. **Open your browser**
+6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Default Login
+## 🔐 Demo Login Credentials
 
-- **Email**: admin@buttery.com
-- **Password**: admin123
+### Admin User (Full Access)
+- **Email**: `mercy@example.com`
+- **Password**: `admin123`
 
-## Database Configuration
+### Vendor Users
+- **Email**: `jessica@example.com` / **Password**: `vendor123`
+- **Email**: `esther@example.com` / **Password**: `vendor123`
+- **Email**: `sharon@example.com` / **Password**: `vendor123`
+- **Email**: `elozino@example.com` / **Password**: `vendor123`
 
-The application supports multiple database types. Configure your database in `.env.local`:
+### Inventory Manager Users
+- **Email**: `emmanuel@example.com` / **Password**: `manager123`
+- **Email**: `sylvanus@example.com` / **Password**: `manager123`
 
-### MySQL
-\`\`\`env
-DB_TYPE=mysql
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=buttery_management
-\`\`\`
+## 🏗️ Database Schema
 
-### PostgreSQL
-\`\`\`env
-DB_TYPE=postgresql
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_NAME=buttery_management
-\`\`\`
+The application uses the following main tables:
 
-### SQLite
-\`\`\`env
-DB_TYPE=sqlite
-DB_PATH=./database.sqlite
-\`\`\`
+- **User**: System users with roles and contact information
+- **ButteryLocation**: Physical buttery locations
+- **Product**: Product catalog with pricing
+- **Sales**: Sales transactions
+- **SaleItem**: Individual items in each sale
+- **InventoryTransaction**: Stock movement tracking
+- **ProductTransaction**: Links products to inventory transactions
+- **Product_Location**: Maps products to locations
 
-### MongoDB
-\`\`\`env
-DB_TYPE=mongodb
-DB_HOST=localhost
-DB_PORT=27017
-DB_NAME=buttery_management
-\`\`\`
+## 🎯 Role-Based Access
 
-### Database URL (Alternative)
-\`\`\`env
-DATABASE_URL=mysql://user:password@localhost:3306/buttery_management
-\`\`\`
+| Feature | Admin | Inventory Manager | Vendor |
+|---------|-------|------------------|--------|
+| Dashboard | ✅ | ✅ | ✅ |
+| Record Sales | ✅ | ❌ | ✅ |
+| Manage Inventory | ✅ | ✅ | ❌ |
+| View Products | ✅ | ✅ | ✅ |
+| View Reports | ✅ | ✅ | ✅ |
+| Manage Users | ✅ | ❌ | ❌ |
+| System Settings | ✅ | ❌ | ❌ |
 
-## Environment Variables
-
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `NODE_ENV` | Environment mode | No | `development` |
-| `JWT_SECRET` | JWT signing secret | Yes | - |
-| `DB_TYPE` | Database type | No | `mysql` |
-| `DB_HOST` | Database host | No | `localhost` |
-| `DB_PORT` | Database port | No | `3306` |
-| `DB_USER` | Database username | No | `root` |
-| `DB_PASSWORD` | Database password | No | - |
-| `DB_NAME` | Database name | No | `buttery_management` |
-| `DATABASE_URL` | Complete database URL | No | - |
-
-## Project Structure
-
-\`\`\`
-├── app/                    # Next.js app directory
-│   ├── api/               # API routes
-│   ├── dashboard/         # Dashboard pages
-│   ├── products/          # Product management
-│   ├── sales/            # Sales management
-│   ├── inventory/        # Inventory management
-│   ├── reports/          # Reports and analytics
-│   └── users/            # User management
-├── components/           # Reusable UI components
-├── lib/                 # Utility libraries
-│   ├── auth.ts          # Authentication utilities
-│   ├── db.ts            # Database abstraction layer
-│   └── utils.ts         # General utilities
-├── hooks/               # Custom React hooks
-└── public/              # Static assets
-\`\`\`
-
-## API Endpoints
+## 🔄 API Endpoints
 
 ### Authentication
 - `POST /api/auth/login` - User login
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/logout` - User logout
+- `GET /api/auth/me` - Get current user
 
 ### Products
 - `GET /api/products` - Get all products
 - `POST /api/products` - Create new product
+- `GET /api/products/[id]` - Get product by ID
 - `PUT /api/products/[id]` - Update product
 - `DELETE /api/products/[id]` - Delete product
 
 ### Sales
-- `GET /api/sales` - Get all sales
-- `POST /api/sales` - Create new sale
+- `GET /api/sales` - Get sales history
+- `POST /api/sales` - Record new sale
 
 ### Dashboard
 - `GET /api/dashboard` - Get dashboard statistics
 
-### Master Data
+### Locations & Categories
 - `GET /api/locations` - Get all locations
 - `GET /api/categories` - Get all categories
 
-## Development
+## 🚀 Deployment
 
-### Adding a New Database
+### Environment Variables for Production
 
-1. Install the database driver:
-   \`\`\`bash
-   npm install your-database-driver
-   \`\`\`
-
-2. Update the `DatabaseService` class in `lib/db.ts`
-
-3. Add configuration options to `.env.example`
-
-### Adding New Features
-
-1. Create API routes in `app/api/`
-2. Add corresponding frontend pages in `app/`
-3. Update the database service if needed
-4. Add proper TypeScript types
-
-## Deployment
-
-### Vercel (Recommended)
-1. Push to GitHub
-2. Connect to Vercel
-3. Configure environment variables
-4. Deploy
-
-### Docker
-\`\`\`bash
-docker build -t buttery-management .
-docker run -p 3000:3000 buttery-management
+\`\`\`env
+NODE_ENV=production
+DB_HOST=your-production-db-host
+DB_PORT=3306
+DB_USER=your-db-user
+DB_PASSWORD=ogabrunle2007$
+DB_NAME=ButteryDB
+JWT_SECRET=your-super-secure-jwt-secret-minimum-32-characters
+NEXTAUTH_URL=https://your-domain.com
+NEXTAUTH_SECRET=your-nextauth-secret
 \`\`\`
 
-### Manual Deployment
-\`\`\`bash
-npm run build
-npm start
-\`\`\`
+### Deploy to Vercel
 
-## Contributing
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Set up environment variables in Vercel dashboard
+4. Deploy!
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📝 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+- **Mercy Odediran** - Project Lead
+- **Jessica Ogbonna** - Frontend Developer
+- **Emmanuel Ogundele** - Backend Developer
+- **Esther Opiah** - UI/UX Designer
+- **Sylvanus Obot** - Database Administrator
+- **Sharon Orji** - Quality Assurance
+- **Elozino Ofeh-Mamuzoh** - DevOps Engineer
+
+## 🆘 Support
+
+If you encounter any issues:
+
+1. Check the [Issues](https://github.com/brunleobe/Buttery-Management-System/issues) page
+2. Create a new issue with detailed information
+3. Contact the development team
+
+## 🔮 Future Enhancements
+
+- [ ] Mobile app development
+- [ ] Barcode scanner integration
+- [ ] Receipt printing functionality
+- [ ] Email notifications
+- [ ] Advanced analytics and reporting
+- [ ] Multi-currency support
+- [ ] Backup and restore functionality
